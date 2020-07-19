@@ -7,7 +7,7 @@ This is my app
 
 ## Link example
 
-[Codetime] (https://www.codetime.io)
+[Codetime](https://www.codetime.io)
 
 1. Item one
 2. Item two
