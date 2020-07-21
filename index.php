@@ -7,26 +7,27 @@
     <title>Document</title>
 </head>
 <body>
+<form action="index.php" method="get">
+<input type="hidden" name="path" value="<?php print($_GET['path']) ?>" /> 
+</form>
    
 <?php
+$dir = '..' . $_GET['path'];
 function readFolderFiles($dir) {
     $files = scandir($dir);
     
-    echo '<ul>';
     foreach ($files as $file) {
         if (substr($file, 0, 1) != '.') {
-            echo '<li>';
             if (is_dir($dir . '/' . $file)) {
-            echo "<li><img src='./images/folder.png' class = 'folder'> ".$file;
+                echo '<a href ="' . $dir .'/' . $file . '">'  .$file . "</ul><img src='./images/folder.png' class = 'folder'>" . '</a>';
                 readFolderFiles($dir . '/' . $file);
             } else 
-            echo '<a href ="' . $dir .'/' . $file . '">' .$file . '</a>';
-            echo '</li>';
+            echo '<a href ="' . '">';
         }
     }
-    echo '</ul>';
 }
-readFolderFiles("C:/Program Files/Ampps/www/");
-?>   
+readFolderFiles($dir);
+?>  
+ 
 </body>
 </html>
