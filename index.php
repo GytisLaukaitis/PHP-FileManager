@@ -73,24 +73,25 @@
     print('<button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "login">Login</button>');
     print('</form>');
     die();
+
 }
     // show files and directories
 
 $path = "./" . str_replace("./","",$_GET['path'], $i);
 $filesDirs = scandir($path);
 
-print('<table><th>Type</th><th>Name</th><th>Actions</th>');
+print('<table><th>Type</th><th>Actions</th><th>Name</th>');
 for ($i = 0; $i < count($filesDirs); $i++) {
     if ($filesDirs[$i] === '.' || $filesDirs[$i] === '..') {
         continue;
     }
     print "<tr><td>";
-    if (is_dir($filesDirs[$i]) &&  isset($_GET['path'])) {
+    if (is_dir($path . $filesDirs[$i])) {
         print ("<img src='./images/folder2.png' class = 'folder'></td>");
-        print ("<td><a href ='?path=" .$path . '/'. $filesDirs[$i] . "'>" . $filesDirs[$i] . "</a></tr></td>");
+        print ("<td><td><a href ='?path=" .$path .  $filesDirs[$i] . '/' . "'>" . $filesDirs[$i] . "</a></tr></td></td>");
     } else {
         print ("<img src='./images/file2.png' class = 'folder'></td>");
-        print ("<td>" . $filesDirs[$i] . "</td></tr>");
+        print ("<td><td>" . $filesDirs[$i] . "</td></tr></td>");
     }
 }
 print ("</table>"); 
