@@ -36,42 +36,15 @@
     <title>File manager</title>
 </head>
 <body>
-    <style>
-        /* table css */
 
-        * {
-            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-        }
-        table {
-            border-collapse: collapse;
-            width: 60%;
-        }
-        table td, table th {
-            border: 1px solid black;
-            padding: 8px;
-        }
-        table tr:nth-child(even){
-            background-color: #f2f2f2;
-        }
-        table tr:hover{
-            background-color: #ddd;
-        }
-        table th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: center;
-            background-color: gray;
-            color: white;
-        }
-    </style>
 <?php
   if(!$_SESSION['logged_in'] == true){
-    print('<form action = "index.php?path=" method = "post">');
+    print('<div class = "form"><span> Please enter username and password</span><form action = "index.php?path=" method = "post">');
     print('<h4>' . $msg . '</h4>');
-    print('<input type = "text" name = "username"  required autofocus></br>');
-    print('<input type = "password" name = "password" required>');
+    print('<input type = "text" class = "username" name = "username"  required autofocus></br>');
+    print('<input type = "password" class = "password" name = "password" required>');
     print('<button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "login">Login</button>');
-    print('</form>');
+    print('</form></div>');
     die();
 
 }
@@ -94,18 +67,18 @@ for ($i = 0; $i < count($filesDirs); $i++) {
         print ('<td><form style="display: inline-block" action="" method="post">
         <input type="hidden" name="delete" value=' . str_replace(' ', '&nbsp;', $fnd) . '>
         <input type="submit" value="Delete">
-       </form><td>' . $filesDirs[$i] . '</td></tr></td>');
+        </form><td>' . $filesDirs[$i] . '</td></tr></td>');
     }
 }
 print ("</table>"); 
 
   //  directory creation logic
-  if(isset($_GET["create_dir"])){
-    if($_GET["create_dir"] != ""){
-        $dir_to_create = './' . $_GET["path"] . $_GET["create_dir"];
-        if (!is_dir($dir_to_create)) mkdir($dir_to_create, 0777, true);
+  if(isset($_GET["make_fold"])){
+    if($_GET["make_fold"] != ""){
+        $folder_create = './' . $_GET["path"] . $_GET["make_fold"];
+        if (!is_dir($folder_create)) mkdir($folder_create, 0777, true);
     }
-    $url = preg_replace("/(&?|\??)create_dir=(.+)?/", "", $_SERVER["REQUEST_URI"]);
+    $url = preg_replace("/(&?|\??)make_fold=(.+)?/", "", $_SERVER["REQUEST_URI"]);
     header('Location: ' . urldecode($url));
 }
 
@@ -121,22 +94,24 @@ print ("</table>");
 }
 
       // Go back button
-
-print("\t".'<button><a href="');
+print ('<div class = "back">');
+print("\t".'<button  class = "batonas"><a href="');
 $back_fake = explode('/', $_SERVER['QUERY_STRING']);
 $back_real = explode('/', $_SERVER['QUERY_STRING'],-2);
 if (count($back_fake) == 1 || count($back_fake) == 2) {
     print('?path=/'.'">GO BACK</a>');
 } else
 print('?'.implode('/',$back_real).'/'.'"> GO BACK</a></button>');
+print ('</div>');
 ?>  
 
-
-<form action="index.php" method="get">
+<div class = "create">
+    <form action="index.php" method="get">
                 <input type="hidden" name="path" value="<?php print($_GET['path']) ?>" /> 
-                <input placeholder="Name of new directory" type="text" id="create_dir" name="create_dir">
+                <input placeholder="Name of new directory" type="text" id="make_fold" name="make_fold">
                 <button type="submit">Submit</button>
-            </form>
+    </form>
+</div>
  <div class = "logout">
  <a href = "index.php?action=logout"> Logout
 </div>
