@@ -7,4 +7,4 @@
 
 ## Link example
 
-[SPRINT](http://127.0.0.1/app7/)
+[SPRINT](http://127.0.0.1/app7/index.php?path=)
