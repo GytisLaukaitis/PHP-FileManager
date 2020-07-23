@@ -91,10 +91,34 @@ for ($i = 0; $i < count($filesDirs); $i++) {
         print ("<td><td><a href ='?path=" .$path .  $filesDirs[$i] . '/' . "'>" . $filesDirs[$i] . "</a></tr></td></td>");
     } else {
         print ("<img src='./images/file2.png' class = 'folder'></td>");
-        print ("<td><td>" . $filesDirs[$i] . "</td></tr></td>");
+        print ('<td><form style="display: inline-block" action="" method="post">
+        <input type="hidden" name="delete" value=' . str_replace(' ', '&nbsp;', $fnd) . '>
+        <input type="submit" value="Delete">
+       </form><td>' . $filesDirs[$i] . '</td></tr></td>');
     }
 }
 print ("</table>"); 
+
+  //  directory creation logic
+  if(isset($_GET["create_dir"])){
+    if($_GET["create_dir"] != ""){
+        $dir_to_create = './' . $_GET["path"] . $_GET["create_dir"];
+        if (!is_dir($dir_to_create)) mkdir($dir_to_create, 0777, true);
+    }
+    $url = preg_replace("/(&?|\??)create_dir=(.+)?/", "", $_SERVER["REQUEST_URI"]);
+    header('Location: ' . urldecode($url));
+}
+
+ // directory deletion logic
+ if(isset($_POST['delete'])){
+    $objToDelete = './' . $_GET["path"] . $_POST['delete']; 
+    $objToDeleteEscaped = str_replace("&nbsp;", " ", htmlentities($objToDelete, null, 'utf-8'));
+    if(is_file($objToDeleteEscaped)){
+        if (file_exists($objToDeleteEscaped)) {
+            unlink($objToDeleteEscaped);
+        }
+    }
+}
 
       // Go back button
 
@@ -106,6 +130,13 @@ if (count($back_fake) == 1 || count($back_fake) == 2) {
 } else
 print('?'.implode('/',$back_real).'/'.'"> GO BACK</a></button>');
 ?>  
+
+
+<form action="index.php" method="get">
+                <input type="hidden" name="path" value="<?php print($_GET['path']) ?>" /> 
+                <input placeholder="Name of new directory" type="text" id="create_dir" name="create_dir">
+                <button type="submit">Submit</button>
+            </form>
  <div class = "logout">
  <a href = "index.php?action=logout"> Logout
 </div>
