@@ -66,10 +66,10 @@
     </style>
 <?php
   if(!$_SESSION['logged_in'] == true){
-    print('<form action = "index.php" method = "post">');
+    print('<form action = "index.php?path=" method = "post">');
     print('<h4>' . $msg . '</h4>');
     print('<input type = "text" name = "username"  required autofocus></br>');
-    print('<input type = "password" name = "password" placeholder = "password = " required>');
+    print('<input type = "password" name = "password" required>');
     print('<button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "login">Login</button>');
     print('</form>');
     die();
