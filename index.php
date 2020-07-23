@@ -1,5 +1,3 @@
-
-<h2>Enter Username and Password</h2> 
 <div>
  <?php
     session_start();
@@ -13,11 +11,18 @@
          ) {
            $_SESSION['logged_in'] = true;
            $_SESSION['timeout'] = time();
-           $_SESSION['username'] = 'Edvinas';
+           $_SESSION['username'] = 'Gytis';
         } else {
            $msg = 'Wrong username or password';
         }
      }
+     if(isset($_GET['action']) and $_GET['action'] == 'logout'){
+        session_start();
+        unset($_SESSION['username']);
+        unset($_SESSION['password']);
+        unset($_SESSION['logged_in']);
+        print('Logged out!');
+    }
  ?>
 </div>
 <!DOCTYPE html>
@@ -26,28 +31,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href= "./css/main.css">
-    <title>Document</title>
+    <title>File manager</title>
 </head>
 <body>
-    <div>
-    <form action = "" method = "post">
-        <h4><?php echo $msg; ?></h4>
-        <input type = "text" name = "username" placeholder = "username = Edvinas" required autofocus></br>
-        <input type = "password" name = "password" placeholder = "password = 01" required>
-        <button type = "submit" name = "login">Login</button>
-    </form>
-        Click here to <a href = "index.php?action=logout"> logout.
-    </div> 
 <style>
         * {
             font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
         }
         table {
             border-collapse: collapse;
-            width: 100%;
+            width: 60%;
         }
         table td, table th {
-            border: 1px solid #ddd;
+            border: 1px solid black;
             padding: 8px;
         }
         table tr:nth-child(even){
@@ -59,13 +55,21 @@
         table th {
             padding-top: 12px;
             padding-bottom: 12px;
-            text-align: left;
+            text-align: center;
             background-color: gray;
             color: white;
         }
     </style>
 <?php
- if($_SESSION['logged_in'] == true){
+  if(!$_SESSION['logged_in'] == true){
+    print('<form action = "index.php" method = "post">');
+    print('<h4>' . $msg . '</h4>');
+    print('<input type = "text" name = "username"  required autofocus></br>');
+    print('<input type = "password" name = "password" placeholder = "password = " required>');
+    print('<button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "login">Login</button>');
+    print('</form>');
+    die();
+}
 $path = "./" . str_replace("./","",$_GET['path'], $i);
 $filesDirs = scandir($path);
 
@@ -75,7 +79,7 @@ for ($i = 0; $i < count($filesDirs); $i++) {
         continue;
     }
     print "<tr><td>";
-    if (is_dir($filesDirs[$i])) {
+    if (is_dir($filesDirs[$i]) &&  isset($_GET['path'])) {
         print ("<img src='./images/folder2.png' class = 'folder'></td>");
         print ("<td><a href ='?path=" .$path . '/'. $filesDirs[$i] . "'>" . $filesDirs[$i] . "</a></tr></td>");
     } else {
@@ -83,17 +87,17 @@ for ($i = 0; $i < count($filesDirs); $i++) {
         print ("<td>" . $filesDirs[$i] . "</td></tr>");
     }
 }
-print ("</table");
- }
- if(isset($_GET['action']) and $_GET['action'] == 'logout'){
-    session_start();
-    unset($_SESSION['username']);
-    unset($_SESSION['password']);
-    unset($_SESSION['logged_in']);
-    print('Logged out!');
-}
-  
+print ("</table>"); 
+print("\t".'<button><a href="');
+$back_fake = explode('/', $_SERVER['QUERY_STRING']);
+$back_real = explode('/', $_SERVER['QUERY_STRING'],-2);
+if (count($back_fake) == 1 || count($back_fake) == 2) {
+    print('?path=/'.'">GO BACK</a>');
+} else
+print('?'.implode('/',$back_real).'/'.'"> GO BACK</a></button>');
 ?>  
- 
+ <div class = "logout">
+ <a href = "index.php?action=logout"> Logout
+</div>
 </body>
 </html>
