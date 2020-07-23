@@ -1,9 +1,9 @@
-# My APP
-This is my app
+# This is my first project of PHP
 
-* Markdown is pretty cool
-* This is supose to be an example
-* I'm enjoying this
+
+* Login / Logout
+* Browse files / directories
+* Add / delete files
 
 ## Link example
 
