@@ -1,5 +1,7 @@
 <div>
  <?php
+      //login logic
+
     session_start();
      $msg = '';
      if (isset($_POST['login']) 
@@ -34,7 +36,9 @@
     <title>File manager</title>
 </head>
 <body>
-<style>
+    <style>
+        /* table css */
+
         * {
             font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
         }
@@ -70,6 +74,8 @@
     print('</form>');
     die();
 }
+    // show files and directories
+
 $path = "./" . str_replace("./","",$_GET['path'], $i);
 $filesDirs = scandir($path);
 
@@ -88,6 +94,9 @@ for ($i = 0; $i < count($filesDirs); $i++) {
     }
 }
 print ("</table>"); 
+
+      // Go back button
+
 print("\t".'<button><a href="');
 $back_fake = explode('/', $_SERVER['QUERY_STRING']);
 $back_real = explode('/', $_SERVER['QUERY_STRING'],-2);
