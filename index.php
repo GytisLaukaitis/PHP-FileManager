@@ -63,11 +63,11 @@ for ($i = 0; $i < count($filesDirs); $i++) {
         print ("<img src='./images/folder2.png' class = 'folder'></td>");
         print ("<td><td><a href ='?path=" .$path .  $filesDirs[$i] . '/' . "'>" . $filesDirs[$i] . "</a></tr></td></td>");
     } else {
-        print ("<img src='./images/file2.png' class = 'folder'></td>");
-        print ('<td><form style="display: inline-block" action="" method="post">
-        <input type="hidden" name="delete" value=' . str_replace(' ', '&nbsp;', $fnd) . '>
-        <input type="submit" value="Delete">
-        </form><td>' . $filesDirs[$i] . '</td></tr></td>');
+        print ( "<img src='./images/file2.png' class = 'folder'></td>");
+        print ( '<td><form style="display: inline-block" action="" method="post">');
+        print ( '<input type="hidden" name="delete" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
+        print ( '<input type="submit" value="Delete">');
+        print ( '</form><td>' . $filesDirs[$i] . '</td></tr></td>');
     }
 }
 print ("</table>"); 
@@ -82,13 +82,13 @@ print ("</table>");
     header('Location: ' . urldecode($url));
 }
 
- // directory deletion logic
+ // file deletion logic
  if(isset($_POST['delete'])){
-    $objToDelete = './' . $_GET["path"] . $_POST['delete']; 
-    $objToDeleteEscaped = str_replace("&nbsp;", " ", htmlentities($objToDelete, null, 'utf-8'));
-    if(is_file($objToDeleteEscaped)){
-        if (file_exists($objToDeleteEscaped)) {
-            unlink($objToDeleteEscaped);
+    $fileDelete = './' . $_GET["path"] . $_POST['delete']; 
+    $fileNotDeleted = str_replace("&nbsp;", " ", htmlentities($fileDelete, null, 'utf-8'));
+    if(is_file($fileNotDeleted)){
+        if (file_exists($fileNotDeleted)) {
+            unlink($fileNotDeleted);
         }
     }
 }
@@ -99,14 +99,14 @@ print("\t".'<button  class = "batonas"><a href="');
 $back_fake = explode('/', $_SERVER['QUERY_STRING']);
 $back_real = explode('/', $_SERVER['QUERY_STRING'],-2);
 if (count($back_fake) == 1 || count($back_fake) == 2) {
-    print('?path=/'.'">GO BACK</a>');
+    print('path'.'">GO BACK</a>');
 } else
 print('?'.implode('/',$back_real).'/'.'"> GO BACK</a></button>');
 print ('</div>');
 ?>  
 
 <div class = "create">
-    <form action="index.php" method="get">
+    <form action="" method="get">
                 <input type="hidden" name="path" value="<?php print($_GET['path']) ?>" /> 
                 <input placeholder="Name of new directory" type="text" id="make_fold" name="make_fold">
                 <button type="submit">Submit</button>
