@@ -106,6 +106,35 @@ if(isset($_POST['deletion'])){
         echo'<script>window.location.reload()</script>';
     }
 }
+   // file upload logic
+   if(isset($_FILES['fileToUpload'])){
+    $errors= array();
+    $file_name = $_FILES['fileToUpload']['name'];
+    $file_size = $_FILES['fileToUpload']['size'];
+    $file_tmp = $_FILES['fileToUpload']['tmp_name'];
+    $file_type = $_FILES['fileToUpload']['type'];
+    $file_ext = strtolower(end(explode('.', $_FILES['fileToUpload']['name'])));
+    
+    $extensions= array("jpeg","jpg","png","pdf");
+    
+    if(in_array($file_ext , $extensions) === false){
+       $errors[] = "extension not allowed, please choose a JPEG, PNG or PDF file.";
+    }
+    
+    if($file_size > 2097152) {
+       $errors[] = 'File size must be below 2 MB';
+    }
+    
+    if(empty($errors)==true) {
+       move_uploaded_file($file_tmp, './' . $_GET["path"] . $file_name);
+       echo "<meta http-equiv='refresh' content='0'>";
+    //    echo "Success";
+    }else{
+        print_r($_FILES);
+        print('<br>');
+        print_r($errors);
+    }
+}
 
       // Go back button
 print ('<div class = "back">');
@@ -125,6 +154,13 @@ print ('</div>');
                 <input placeholder="Name of new directory" type="text" id="make_fold" name="make_fold">
                 <button type="submit">Submit</button>
     </form>
+    <form action="" method="post" enctype="multipart/form-data">
+                <input type="file" name="fileToUpload" id="img" style="display:none;"/>
+                <button style="display: block; width: 100%" type="button">
+                    <label for="img">Choose file</label>
+                </button>
+                <button style="display: block; width: 100%" type="submit">Upload file</button>
+            </form>
 </div>
  <div class = "logout">
  <a href = "index.php?action=logout"> Logout
