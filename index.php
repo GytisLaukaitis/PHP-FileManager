@@ -65,7 +65,7 @@ for ($i = 0; $i < count($filesDirs); $i++) {
     }
     print "<tr><td>";
     if (is_dir($path . $filesDirs[$i])) {
-        print ("<img src='./images/folder2.png' class = 'folder'></td>");
+        print ("<img src='./images/folder3.png' class = 'folder'></td>");
 
         // Directory deletion from
 
@@ -82,7 +82,7 @@ for ($i = 0; $i < count($filesDirs); $i++) {
         print ("</form><td><a href ='?path=" .$path .  $filesDirs[$i] . '/' . "'>" . $filesDirs[$i] . "</a></tr></td></td>");
 
     } else {
-        print ( "<img src='./images/file2.png' class = 'folder'></td>");
+        print ( "<img src='./images/file3.png' class = 'folder'></td>");
 
         // File delete form
 
