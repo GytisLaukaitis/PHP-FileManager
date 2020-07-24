@@ -61,16 +61,26 @@ for ($i = 0; $i < count($filesDirs); $i++) {
     print "<tr><td>";
     if (is_dir($path . $filesDirs[$i])) {
         print ("<img src='./images/folder2.png' class = 'folder'></td>");
+
         print ( '<td><form style="display: inline-block" action="" method="post">');
         print ( '<input type="hidden" name="deletion" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
         print ( '<input type="submit" value="Delete">');
+        print ( '<form style="display: inline-block" action="" method="post">');
+        print ( '<input type="hidden" name="download" value=' . str_replace(' ', '&nbsp;', $fnd) . '>');
+        print ( '<input type="submit" value="Download">');
         print ("</form><td><a href ='?path=" .$path .  $filesDirs[$i] . '/' . "'>" . $filesDirs[$i] . "</a></tr></td></td>");
+
     } else {
         print ( "<img src='./images/file2.png' class = 'folder'></td>");
+
         print ( '<td><form style="display: inline-block" action="" method="post">');
         print ( '<input type="hidden" name="delete" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
         print ( '<input type="submit" value="Delete">');
+        print ( '<form style="display: inline-block" action="" method="post">');
+        print ( '<input type="hidden" name="download" value=' . str_replace(' ', '&nbsp;', $fnd) . '>');
+        print ( '<input type="submit" value="Download">');
         print ( '</form><td>' . $filesDirs[$i] . '</td></tr></td>');
+
     }
 }
 print ("</table>"); 
@@ -106,6 +116,25 @@ if(isset($_POST['deletion'])){
         echo'<script>window.location.reload()</script>';
     }
 }
+// file download logic
+if(isset($_POST['download'])){
+    print('Path to download: ' . './' . $_GET["path"] . $_POST['download']);
+    $file='./' . $_GET["path"] . $_POST['download'];
+    $fileToDownloadEscaped = str_replace("&nbsp;", " ", htmlentities($file, null, 'utf-8'));
+
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename=' . basename($fileToDownloadEscaped));
+    header('Content-Transfer-Encoding: binary');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($fileToDownloadEscaped));
+
+    // flush();
+    readfile($fileToDownloadEscaped);
+    exit;
+}
    // file upload logic
    if(isset($_FILES['fileToUpload'])){
     $errors= array();
@@ -115,7 +144,7 @@ if(isset($_POST['deletion'])){
     $file_type = $_FILES['fileToUpload']['type'];
     $file_ext = strtolower(end(explode('.', $_FILES['fileToUpload']['name'])));
     
-    $extensions= array("jpeg","jpg","png","pdf");
+    $extensions= array("jpeg","jpg","png","pdf","txt", "html");
     
     if(in_array($file_ext , $extensions) === false){
        $errors[] = "extension not allowed, please choose a JPEG, PNG or PDF file.";
@@ -150,17 +179,17 @@ print ('</div>');
 
 <div class = "create">
     <form action="" method="get">
-                <input type="hidden" name="path" value="<?php print($_GET['path']) ?>" /> 
-                <input placeholder="Name of new directory" type="text" id="make_fold" name="make_fold">
-                <button type="submit">Submit</button>
+        <input type="hidden" name="path" value="<?php print($_GET['path']) ?>" /> 
+        <input placeholder="Name of new directory" type="text" id="make_fold" name="make_fold">
+        <button type="submit">Submit</button>
     </form>
     <form action="" method="post" enctype="multipart/form-data">
-                <input type="file" name="fileToUpload" id="img" style="display:none;"/>
-                <button style="display: block; width: 100%" type="button">
-                    <label for="img">Choose file</label>
-                </button>
-                <button style="display: block; width: 100%" type="submit">Upload file</button>
-            </form>
+        <input type="file" name="fileToUpload" id="img" style="display:none;"/>
+        <button style="display: block; width: 100%" type="button">
+        <label for="img">Choose file</label>
+        </button>
+        <button style="display: block; width: 100%" type="submit">Upload file</button>
+    </form>
 </div>
  <div class = "logout">
  <a href = "index.php?action=logout"> Logout
