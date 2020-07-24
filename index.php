@@ -64,9 +64,9 @@ for ($i = 0; $i < count($filesDirs); $i++) {
 
         print ( '<td><form style="display: inline-block" action="" method="post">');
         print ( '<input type="hidden" name="deletion" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
-        print ( '<input type="submit" value="Delete">');
+        print ( '<input type="submit" value="Delete"></form>');
         print ( '<form style="display: inline-block" action="" method="post">');
-        print ( '<input type="hidden" name="download" value=' . str_replace(' ', '&nbsp;', $fnd) . '>');
+        print ( '<input type="hidden" name="download" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
         print ( '<input type="submit" value="Download">');
         print ("</form><td><a href ='?path=" .$path .  $filesDirs[$i] . '/' . "'>" . $filesDirs[$i] . "</a></tr></td></td>");
 
@@ -75,9 +75,9 @@ for ($i = 0; $i < count($filesDirs); $i++) {
 
         print ( '<td><form style="display: inline-block" action="" method="post">');
         print ( '<input type="hidden" name="delete" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
-        print ( '<input type="submit" value="Delete">');
+        print ( '<input type="submit" value="Delete"></form>');
         print ( '<form style="display: inline-block" action="" method="post">');
-        print ( '<input type="hidden" name="download" value=' . str_replace(' ', '&nbsp;', $fnd) . '>');
+        print ( '<input type="hidden" name="download" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
         print ( '<input type="submit" value="Download">');
         print ( '</form><td>' . $filesDirs[$i] . '</td></tr></td>');
 
@@ -119,8 +119,8 @@ if(isset($_POST['deletion'])){
 // file download logic
 if(isset($_POST['download'])){
     print('Path to download: ' . './' . $_GET["path"] . $_POST['download']);
-    $file='./' . $_GET["path"] . $_POST['download'];
-    $fileToDownloadEscaped = str_replace("&nbsp;", " ", htmlentities($file, null, 'utf-8'));
+    $path='./' . $_GET["path"] . $_POST['download'];
+    $fileToDownloadEscaped = str_replace("&nbsp;", " ", htmlentities($path, null, 'utf-8'));
 
     header('Content-Description: File Transfer');
     header('Content-Type: application/pdf');
