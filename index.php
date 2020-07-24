@@ -61,7 +61,10 @@ for ($i = 0; $i < count($filesDirs); $i++) {
     print "<tr><td>";
     if (is_dir($path . $filesDirs[$i])) {
         print ("<img src='./images/folder2.png' class = 'folder'></td>");
-        print ("<td><td><a href ='?path=" .$path .  $filesDirs[$i] . '/' . "'>" . $filesDirs[$i] . "</a></tr></td></td>");
+        print ( '<td><form style="display: inline-block" action="" method="post">');
+        print ( '<input type="hidden" name="deletion" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
+        print ( '<input type="submit" value="Delete">');
+        print ("</form><td><a href ='?path=" .$path .  $filesDirs[$i] . '/' . "'>" . $filesDirs[$i] . "</a></tr></td></td>");
     } else {
         print ( "<img src='./images/file2.png' class = 'folder'></td>");
         print ( '<td><form style="display: inline-block" action="" method="post">');
@@ -78,6 +81,7 @@ print ("</table>");
         $folder_create = './' . $_GET["path"] . $_GET["make_fold"];
         if (!is_dir($folder_create)) mkdir($folder_create, 0777, true);
     }
+    echo'<script>window.location.reload()</script>';
     $url = preg_replace("/(&?|\??)make_fold=(.+)?/", "", $_SERVER["REQUEST_URI"]);
     header('Location: ' . urldecode($url));
 }
@@ -89,7 +93,17 @@ print ("</table>");
     if(is_file($fileNotDeleted)){
         if (file_exists($fileNotDeleted)) {
             unlink($fileNotDeleted);
+            echo'<script>window.location.reload()</script>';
         }
+    }
+}
+// folder deletion logic
+if(isset($_POST['deletion'])){
+    $folderDelete = './' . $_GET["path"] . $_POST['deletion']; 
+    $folderNotDeleted = str_replace("&nbsp;", " ", htmlentities($folderDelete, null, 'utf-8'));
+    if(is_dir($folderNotDeleted)){
+        rmdir($folderNotDeleted);
+        echo'<script>window.location.reload()</script>';
     }
 }
 
