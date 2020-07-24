@@ -1,6 +1,6 @@
 <div>
  <?php
-      //login logic
+      //Login logic
 
     session_start();
      $msg = '';
@@ -18,6 +18,8 @@
            $msg = 'Wrong username or password';
         }
      }
+
+    //  Logout logic
      if(isset($_GET['action']) and $_GET['action'] == 'logout'){
         session_start();
         unset($_SESSION['username']);
@@ -39,6 +41,9 @@
 
 <?php
   if(!$_SESSION['logged_in'] == true){
+
+    // Login form
+
     print('<div class = "form"><span> Please enter username and password</span><form action = "index.php?path=" method = "post">');
     print('<h4>' . $msg . '</h4>');
     print('<input type = "text" class = "username" name = "username"  required autofocus></br>');
@@ -48,7 +53,7 @@
     die();
 
 }
-    // show files and directories
+    // Show files and directories
 
 $path = "./" . str_replace("./","",$_GET['path'], $i);
 $filesDirs = scandir($path);
@@ -62,30 +67,42 @@ for ($i = 0; $i < count($filesDirs); $i++) {
     if (is_dir($path . $filesDirs[$i])) {
         print ("<img src='./images/folder2.png' class = 'folder'></td>");
 
+        // Directory deletion from
+
         print ( '<td><form style="display: inline-block" action="" method="post">');
         print ( '<input type="hidden" name="deletion" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
         print ( '<input type="submit" value="Delete"></form>');
+
+        // Directory download form
+
         print ( '<form style="display: inline-block" action="" method="post">');
         print ( '<input type="hidden" name="download" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
         print ( '<input type="submit" value="Download">');
+
         print ("</form><td><a href ='?path=" .$path .  $filesDirs[$i] . '/' . "'>" . $filesDirs[$i] . "</a></tr></td></td>");
 
     } else {
         print ( "<img src='./images/file2.png' class = 'folder'></td>");
 
+        // File delete form
+
         print ( '<td><form style="display: inline-block" action="" method="post">');
         print ( '<input type="hidden" name="delete" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
         print ( '<input type="submit" value="Delete"></form>');
+
+        // File download form
+
         print ( '<form style="display: inline-block" action="" method="post">');
         print ( '<input type="hidden" name="download" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
         print ( '<input type="submit" value="Download">');
+
         print ( '</form><td>' . $filesDirs[$i] . '</td></tr></td>');
 
     }
 }
 print ("</table>"); 
 
-  //  directory creation logic
+  //  Directory creation logic
   if(isset($_GET["make_fold"])){
     if($_GET["make_fold"] != ""){
         $folder_create = './' . $_GET["path"] . $_GET["make_fold"];
@@ -96,7 +113,7 @@ print ("</table>");
     header('Location: ' . urldecode($url));
 }
 
- // file deletion logic
+ // File deletion logic
  if(isset($_POST['delete'])){
     $fileDelete = './' . $_GET["path"] . $_POST['delete']; 
     $fileNotDeleted = str_replace("&nbsp;", " ", htmlentities($fileDelete, null, 'utf-8'));
@@ -107,7 +124,7 @@ print ("</table>");
         }
     }
 }
-// folder deletion logic
+// Folder deletion logic
 if(isset($_POST['deletion'])){
     $folderDelete = './' . $_GET["path"] . $_POST['deletion']; 
     $folderNotDeleted = str_replace("&nbsp;", " ", htmlentities($folderDelete, null, 'utf-8'));
@@ -116,7 +133,7 @@ if(isset($_POST['deletion'])){
         echo'<script>window.location.reload()</script>';
     }
 }
-// file download logic
+// File download logic
 if(isset($_POST['download'])){
     print('Path to download: ' . './' . $_GET["path"] . $_POST['download']);
     $path='./' . $_GET["path"] . $_POST['download'];
@@ -135,7 +152,7 @@ if(isset($_POST['download'])){
     readfile($fileToDownloadEscaped);
     exit;
 }
-   // file upload logic
+   // File upload logic
    if(isset($_FILES['fileToUpload'])){
     $errors= array();
     $file_name = $_FILES['fileToUpload']['name'];
@@ -157,7 +174,6 @@ if(isset($_POST['download'])){
     if(empty($errors)==true) {
        move_uploaded_file($file_tmp, './' . $_GET["path"] . $file_name);
        echo "<meta http-equiv='refresh' content='0'>";
-    //    echo "Success";
     }else{
         print_r($_FILES);
         print('<br>');
@@ -176,13 +192,14 @@ if (count($back_fake) == 1 || count($back_fake) == 2) {
 print('?'.implode('/',$back_real).'/'.'"> GO BACK</a></button>');
 print ('</div>');
 ?>  
-
+<!-- Directory creation form -->
 <div class = "create">
     <form action="" method="get">
         <input type="hidden" name="path" value="<?php print($_GET['path']) ?>" /> 
         <input placeholder="Name of new directory" type="text" id="make_fold" name="make_fold">
         <button type="submit">Submit</button>
     </form>
+    <!-- File upload form -->
     <form action="" method="post" enctype="multipart/form-data">
         <input type="file" name="fileToUpload" id="img" style="display:none;"/>
         <button style="display: block; width: 100%" type="button">
