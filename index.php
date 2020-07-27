@@ -139,6 +139,7 @@ if(isset($_POST['download'])){
     $path='./' . $_GET["path"] . $_POST['download'];
     $fileToDownloadEscaped = str_replace("&nbsp;", " ", htmlentities($path, null, 'utf-8'));
 
+    header('Content-Type: image/jpeg');
     header('Content-Description: File Transfer');
     header('Content-Type: application/pdf');
     header('Content-Disposition: attachment; filename=' . basename($fileToDownloadEscaped));
@@ -161,7 +162,7 @@ if(isset($_POST['download'])){
     $file_type = $_FILES['fileToUpload']['type'];
     $file_ext = strtolower(end(explode('.', $_FILES['fileToUpload']['name'])));
     
-    $extensions= array("jpeg","jpg","png","pdf","txt", "html");
+    $extensions= array("jpeg","jpg","png","pdf");
     
     if(in_array($file_ext , $extensions) === false){
        $errors[] = "extension not allowed, please choose a JPEG, PNG or PDF file.";
