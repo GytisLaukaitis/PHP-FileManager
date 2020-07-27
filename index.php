@@ -95,9 +95,9 @@ for ($i = 0; $i < count($filesDirs); $i++) {
         print ( '<form style="display: inline-block" action="" method="post">');
         print ( '<input type="hidden" name="download" value=' . str_replace(' ', '&nbsp;', $filesDirs[$i]) . '>');
         print ( '<input type="submit" value="Download">');
-
+       
         print ( '</form><td>' . $filesDirs[$i] . '</td></tr></td>');
-
+        
     }
 }
 print ("</table>"); 
@@ -139,7 +139,6 @@ if(isset($_POST['download'])){
     $path='./' . $_GET["path"] . $_POST['download'];
     $fileToDownloadEscaped = str_replace("&nbsp;", " ", htmlentities($path, null, 'utf-8'));
 
-    header('Content-Type: image/jpeg');
     header('Content-Description: File Transfer');
     header('Content-Type: application/pdf');
     header('Content-Disposition: attachment; filename=' . basename($fileToDownloadEscaped));
@@ -148,8 +147,10 @@ if(isset($_POST['download'])){
     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
     header('Pragma: public');
     header('Content-Length: ' . filesize($fileToDownloadEscaped));
-
-    // flush();
+    header('Content-Type: image/jpeg');
+    
+    ob_clean();
+    flush();
     readfile($fileToDownloadEscaped);
     exit;
 }
