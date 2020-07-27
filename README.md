@@ -3,8 +3,9 @@
 
 * Login / Logout
 * Browse directories
-* Add directories / delete files
+* Add / delete direcotories & files
 * Upload / download files
+* Login: Gytis  / Password: password
 
 ## Link example
 
